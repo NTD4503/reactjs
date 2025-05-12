@@ -11,7 +11,8 @@ import { userIsAuthenticated, userIsNotAuthenticated } from '../hoc/authenticati
 import { path } from '../utils'
 
 import Home from '../routes/Home';
-import Login from '../routes/Login';
+// import Login from '../routes/Login';
+import Login from './Auth/Login';
 import Header from './Header/Header';
 import System from '../routes/System';
 
@@ -42,14 +43,16 @@ class App extends Component {
         return (
             <Fragment>
                 <Router history={history}>
+                    {/* khi refest lai web muon giu lai data thi dung history */}
                     <div className="main-container">
                         <ConfirmModal />
                         {this.props.isLoggedIn && <Header />}
-
+                        {/* check xem cos login hay ko neu log roi se render Header */}
                         <span className="content-container">
                             <Switch>
                                 <Route path={path.HOME} exact component={(Home)} />
                                 <Route path={path.LOGIN} component={userIsNotAuthenticated(Login)} />
+                                {/* check xem ng dung dang nhap chua neu chua se ve trang home */}
                                 <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
                             </Switch>
                         </span>
@@ -70,7 +73,7 @@ class App extends Component {
 const mapStateToProps = state => {
     return {
         started: state.app.started,
-        isLoggedIn: state.admin.isLoggedIn
+        isLoggedIn: state.user.isLoggedIn
     };
 };
 

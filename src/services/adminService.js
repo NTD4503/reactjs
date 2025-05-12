@@ -1,7 +1,7 @@
 import axios from '../axios';
 import * as queryString from 'query-string';
 
-const adminService = {
+const userService = {
 
     /**
      * Đăng nhập hệ thống
@@ -11,9 +11,9 @@ const adminService = {
      * }
      */
     login(loginBody) {
-        return axios.post(`/admin/login`, loginBody)
+        return axios.post(`/user/login`, loginBody)
     },
 
 };
 
-export default adminService;
+export default userService;

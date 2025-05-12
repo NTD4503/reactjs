@@ -28,8 +28,8 @@
     "menu": {
         "system": {
             "header": "System",
-            "system-administrator": {
-                "header": "System Administrator",
+            "system-useristrator": {
+                "header": "System useristrator",
                 "user-manage": "User manage",
                 "product-manage": "Package manage",
                 "register-package-group-or-account": "Register service package for group/account"
