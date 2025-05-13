@@ -5,4 +5,9 @@ const handleLoginApi = (userEmail, userPassword) => {
     //kiem tra email, password truyen vao phia o userController
 }
 
-export { handleLoginApi }
+const getAllUsers = (inputId) => {
+    //template string
+    return axios.get(`/api/get-all-users?id=${inputId}`)
+}
+
+export { handleLoginApi, getAllUsers }
