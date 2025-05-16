@@ -49,3 +49,44 @@
         background-color: transparent !important;
     }
 }
+
+.modal-user-container {
+    .modal-content {
+        .modal-header {
+            button {
+                background-color: transparent !important;
+                color: white;
+                font-size: 27px;
+                border: none;
+            }
+        }
+
+    }
+
+    .modal-user-body {
+        gap: 15px; //khoang cach thang con khi dung flex
+        display: flex;
+        flex-wrap: wrap;
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            width: 48%;
+
+            &.max-width-input {
+                width: 100%;
+            }
+
+            //& dinh nghia ngang hang
+
+            input {
+                border-radius: 5px;
+                height: 30px;
+                border: 1px solid gray;
+                outline: none;
+                padding: 0 10px;
+            }
+        }
+    }
+
+}
