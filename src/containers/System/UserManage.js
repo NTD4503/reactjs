@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './UserManage.scss';
-import { getAllUsers, createNewUserService, deleteUserService } from '../../services/userService'
+import { getAllUsers, createNewUserService, deleteUserService, editUserService } from '../../services/userService'
 import ModalUser from './ModalUser';
 import { emitter } from '../../utils/emitter';
+import ModalEditUser from './ModalEditUser';
 class UserManage extends Component {
     //properties; nested 
     //tao bien muon dung voi class
@@ -14,6 +15,8 @@ class UserManage extends Component {
         super(props);
         this.state = {
             arrUsers: [],
+            userEdit: {},
+            isOpenModalEditUser: false,
             isOpenModalUser: false, //mac dinh se ko mo modal
         }
     }
@@ -44,6 +47,11 @@ class UserManage extends Component {
     toggleUserModal = () => {
         this.setState({
             isOpenModalUser: !this.state.isOpenModalUser,
+        })
+    }
+    toggleUserModalEditUser = () => {
+        this.setState({
+            isOpenModalEditUser: !this.state.isOpenModalEditUser,
         })
     }
 
@@ -82,9 +90,35 @@ class UserManage extends Component {
         }
     }
 
+    handleEditUser = (user) => {
+        console.log('check editUser', user);
+        this.setState({
+            isOpenModalEditUser: true,
+            userEdit: user
+        })
+    }
+    // ham ket noi voi db luon la ham bat dong bo
+    doEditUser = async (user) => {
+        try {
+            let res = await editUserService(user);
+            if (res && res.errCode === 0) {
+                this.setState({
+                    isOpenModalEditUser: false
+                })
+                await this.getAllUsersFromReact()
+            } else {
+                alert(res.errCode)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+
+
+    }
+
     render() {
         let arrUsers = this.state.arrUsers;
-        console.log('checkk', arrUsers);
+        // console.log('checkk', arrUsers);
 
         return (
             <div className='users-container'>
@@ -93,6 +127,15 @@ class UserManage extends Component {
                     isOpen={this.state.isOpenModalUser}
                     toggleFromParent={this.toggleUserModal}
                 />
+                {this.state.isOpenModalEditUser &&
+                    <ModalEditUser
+                        // createNewUser={this.createNewUser}
+                        currentUser={this.state.userEdit}
+                        isOpen={this.state.isOpenModalEditUser}
+                        editUser={this.doEditUser}
+                        toggleFromParent={this.toggleUserModalEditUser}
+                    />}
+                {/* Neu isOpenModalEditUser = true se chen ModalEditUser vao page  */}
                 <div className='title text-center'> Manage users </div>
                 <div className='mx-1'>
                     <button
@@ -121,7 +164,7 @@ class UserManage extends Component {
                                         <td>{item.lastName}</td>
                                         <td>{item.address}</td>
                                         <td>
-                                            <button className='btn-edit'><i className='fas fa-pencil-alt'></i> </button>
+                                            <button className='btn-edit' onClick={() => this.handleEditUser(item)}><i className='fas fa-pencil-alt'></i> </button>
                                             <button className='btn-delete'
                                                 onClick={() => { this.handleDeleteUser(item) }}
                                             ><i className='fas fa-trash'></i></button>
